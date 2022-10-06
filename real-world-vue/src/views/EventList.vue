@@ -3,9 +3,10 @@
     <h1>Event Listing</h1>
 
     <event-card/>
-    
+
   </div>
 </template>
+
 
 
 <script>
