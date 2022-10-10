@@ -1,20 +1,20 @@
 <template>
   <div>
     <div class="event-header">
-      <span class="eyebrow">@{{ event.time }} on {{ event.date }}</span>
-      <h1 class="title">{{ event.title }}</h1>
-      <h5>Organized by {{ event.organizer ? event.organizer.name : '' }}</h5>
-      <h5>Category: {{ event.category }}</h5>
+      <span class="eyebrow">@{{ currentEvent.time }} on {{ currentEvent.date }}</span>
+      <h1 class="title">{{ currentEvent.title }}</h1>
+      <h5>Organized by {{ currentEvent.organizer ? currentEvent.organizer.name : '' }}</h5>
+      <h5>Category: {{ currentEvent.category }}</h5>
     </div>
     <BaseIcon name="map"><h2>Location</h2></BaseIcon>
-    <address>{{ event.location }}</address>
+    <address>{{ currentEvent.location }}</address>
     <h2>Event details</h2>
-    <p>{{ event.description }}</p>
+    <p>{{ currentEvent.description }}</p>
     <h2>Attendees
-      <span class="badge -fill-gradient">{{ event.attendees ? event.attendees.length : 0 }}</span>
+      <span class="badge -fill-gradient">{{ currentEvent.attendees ? currentEvent.attendees.length : 0 }}</span>
     </h2>
     <ul class="list-group">
-      <li v-for="(attendee, index) in event.attendees" :key="index" class="list-item">
+      <li v-for="(attendee, index) in currentEvent.attendees" :key="index" class="list-item">
         <b>{{ attendee.name }}</b>
       </li>
     </ul>
@@ -23,25 +23,17 @@
 
 <script>
 
-import EventServices from '../services/EventServices'
+import { mapState } from 'vuex'
 
 export default {
   props: ["id"],
 
-  data() {
-    return {
-      event: {}
-    }
-  },
   created() {
-    EventServices.getEvent(this.id)
-      .then(response => {
-        this.event = response.data
-      })
-      .catch(error => {
-        console.log('There was an error: ' + error.response)
-      })
-  }
+    this.$store.dispatch('getEventInfo', this.id)
+  },
+
+  computed: mapState(['currentEvent'])
+  
 
 
 };
