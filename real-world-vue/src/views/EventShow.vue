@@ -23,16 +23,19 @@
 
 <script>
 
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   props: ["id"],
 
   created() {
-    this.$store.dispatch('getEventInfo', this.id)
+    this.getEventInfo(this.id)
   },
 
-  computed: mapState(['currentEvent'])
+  computed: mapState({
+    currentEvent: state => state.event.currentEvent
+  }),
+  methods: mapActions('event', ['getEventInfo'])
   
 
 
